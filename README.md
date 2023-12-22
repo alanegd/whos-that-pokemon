@@ -8,6 +8,8 @@
   Who's that Pokémon?
 </h1>
 
+Single web application made with Vue to practice API calls. Guess the name of the Pokémon shown on screen to earn points. Feel free to open a pull request in case you have any suggestions to enhance this project.
+
 
 ## Technologies used
 
@@ -39,7 +41,7 @@ npm run dev
 
 ## Project structure
 
-    ```
+```
     .
     ├─  shared
     │   └── services
@@ -57,7 +59,7 @@ npm run dev
         └── shared
             └── components
                 # Contains the components that are shared across the app
-
+```
 
 ## Contact
 * GitHub: [https://github.com/alanegd](https://github.com/alanegd)
