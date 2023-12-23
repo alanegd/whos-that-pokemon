@@ -8,4 +8,9 @@ export class pokemonApiService {
     getPokemonByName(name) {
         return http.get(`/pokemon/${name}`);
     }
+
+    getPokemonByRandomIdRange(max) {
+        const randomId = Math.floor(Math.random() * (max + 1));
+        return http.get(`/pokemon/${randomId}`);
+    }
 }

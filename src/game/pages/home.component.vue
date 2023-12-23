@@ -11,13 +11,12 @@ export default {
       streak: 0,
       best: 0,
       loading: true,
-      isDarken: true,
     };
   },
 
   created() {
     this.pokemonApi = new pokemonApiService();
-    this.pokemonApi.getPokemonById(Math.floor((Math.random() * 151) + 1)).then((response) => {
+    this.pokemonApi.getPokemonByRandomIdRange(151).then((response) => {
       this.pokemon = response.data;
       this.loading = false;
     });
@@ -25,20 +24,18 @@ export default {
 
   methods: {
     async handleSubmit() {
-      // Verify that the submitted Pokémon name equals the displayed Pokémon name. If it's correct, the displayed Pokémon changes to a new one.
-      this.isDarken = false;
+      // Verify that the submitted Pokémon name equals the displayed Pokémon name.
       if (this.pokemon_name.toLowerCase() === this.pokemon.name.toLowerCase()) {
         alert("Correct!");
         this.streak++;
       } else {
-        alert("Wrong!");
+        alert("Wrong! The Pokémon was " + this.pokemon.name + ".");
         this.streak = 0;
       }
       if (this.best < this.streak) {
         this.best = this.streak;
       }
-      this.isDarken = true;
-      this.pokemonApi.getPokemonById(Math.floor((Math.random() * 151) + 1)).then((response) => {
+      this.pokemonApi.getPokemonByRandomIdRange(151).then((response) => {
         this.pokemon = response.data;
       });
       this.pokemon_name = "";
@@ -48,22 +45,27 @@ export default {
 </script>
 
 <template>
-  <div class="flex justify-center align-center">
-    <pv-card class="px-10" v-if="!loading">
-      <template #content>
-        <div class="flex flex-col justify-center align-center text-center">
-          <h1 class="mb-3 text-3xl font-bold">Who's that Pokémon?</h1>
+  <div class="flex justify-center items-center h-screen mx-auto">
+    <pv-card class="px-10 mx-10" v-if="!loading">
+      <template #header>
+        <div class="flex flex-col justify-center text-center mt-4">
+          <h1 class="text-2xl font-bold">Who's that Pokémon?</h1>
           <div class="flex justify-center gap-3">
             <p>Streak: {{streak}}</p>
             <p>Best streak: {{best}}</p>
           </div>
-          <img :class="{ 'darken': isDarken }" :src="pokemon.sprites.front_default" alt="pokemon">
+        </div>
+      </template>
+      <template #content>
+        <div class="flex flex-col justify-center align-center text-center">
+          <img class="darken" :src="pokemon.sprites.other['official-artwork'].front_default" alt="pokemon">
 
           <form id="guess_pokemon_name" @submit.prevent="handleSubmit">
             <pv-input-text
                 id="pokemon_name"
-                class="w-full mb-4 px-3 py-2 border rounded-md"
+                class="w-full mb-4 px-3 py-2 border border-gray-600 rounded-md"
                 v-model="pokemon_name"
+                autocomplete="off"
                 required>
             </pv-input-text>
             <pv-button class="py-3 px-7 font-semibold text-white bg-[#ec5f4d] hover:bg-[#ff7c67] rounded-full"
